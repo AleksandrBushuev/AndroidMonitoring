@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">AndroidMonitoring</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Добавить продукт</string>
 </resources>
