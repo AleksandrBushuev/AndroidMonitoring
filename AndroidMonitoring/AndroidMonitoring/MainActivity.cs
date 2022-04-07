@@ -1,17 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using AndroidMonitoring.Dto;
 
 namespace AndroidMonitoring
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        private ListProductsAdapter _productsAdapter;
+        private ListView _listView;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -21,8 +28,17 @@ namespace AndroidMonitoring
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
 
-            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            fab.Click += FabOnClick;
+            List<ProductDto> products = Enumerable.Range(1, 50)
+                .Select(n => new ProductDto { 
+                    Id = n,
+                    Name = $"Имя {n}",                
+                })
+                .ToList();
+
+            _listView = FindViewById<ListView>(Resource.Id.list);
+            _productsAdapter = new ListProductsAdapter(this, products);
+            _listView.Adapter = _productsAdapter;
+
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -36,18 +52,15 @@ namespace AndroidMonitoring
             int id = item.ItemId;
             if (id == Resource.Id.action_settings)
             {
+                Intent intent = new Intent(this, typeof(ProductActivity));
+                StartActivity(intent);
+
                 return true;
             }
 
             return base.OnOptionsItemSelected(item);
         }
-
-        private void FabOnClick(object sender, EventArgs eventArgs)
-        {
-            View view = (View) sender;
-            Snackbar.Make(view, "Replace with your own action", Snackbar.LengthLong)
-                .SetAction("Action", (Android.Views.View.IOnClickListener)null).Show();
-        }
+             
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
