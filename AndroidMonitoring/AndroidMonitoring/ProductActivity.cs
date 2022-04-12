@@ -4,10 +4,14 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using AndroidMonitoring.Entities;
+using AndroidMonitoring.Repositories;
+using AndroidMonitoring.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace AndroidMonitoring
 {
@@ -18,7 +22,44 @@ namespace AndroidMonitoring
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            SetContentView(Resource.Layout.layout_product);         
+            SetContentView(Resource.Layout.layout_product);
+
+            var dbConnection = DataBaseProvider.GetSQLiteConnection();
+            var productRepository = new ProductRepository(dbConnection);
+                 
+
+            var btnAddProduct = FindViewById<Button>(Resource.Id.button1);
+            var editTextProductName = FindViewById<EditText>(Resource.Id.editTextProductName);
+            var editTextUrl = FindViewById<EditText>(Resource.Id.editTextUrl);
+
+
+
+            btnAddProduct.Click += (sender, evt) =>
+            {
+                if (string.IsNullOrEmpty(editTextProductName.Text))
+                    return; //показать сообщение
+                   
+                var urlRegex = new Regex(@"^http[s]*:\\[\w|\S|\s]+");
+                if (urlRegex.IsMatch(editTextUrl.Text))
+                    return; //показать сообщение
+
+                ProductEntity productEntity = new ProductEntity()
+                {
+                    Name = editTextProductName.Text,
+                    Url = editTextUrl.Text
+                };
+
+                int id= productRepository.SaveOrUpdate(productEntity);
+
+                if (id != 0)
+                {
+                    //показать сообщение
+                    editTextProductName.Text = string.Empty;
+                    editTextUrl.Text = string.Empty;
+                }
+                   
+
+            };
 
         }
     }
