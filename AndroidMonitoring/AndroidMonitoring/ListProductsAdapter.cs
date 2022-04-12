@@ -25,7 +25,6 @@ namespace AndroidMonitoring
             _data = data;
         }
 
-
         public override Java.Lang.Object GetItem(int position)
         {
             return position;
@@ -33,7 +32,7 @@ namespace AndroidMonitoring
 
         public override long GetItemId(int position)
         {
-            return position;
+            return _data[position].Id;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
