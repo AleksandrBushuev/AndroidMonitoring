@@ -14,11 +14,11 @@ using System.Text;
 
 namespace AndroidMonitoring.Services
 {
-    public class MonitoringServices
+    public class MonitoringService
     {
         private readonly ProductRepository _productRepository;
         private readonly PriceRepository _priceRepository;
-        public MonitoringServices(ProductRepository productRepository , PriceRepository priceRepository)
+        public MonitoringService(ProductRepository productRepository , PriceRepository priceRepository)
         {
             _productRepository = productRepository;
             _priceRepository = priceRepository;
@@ -49,6 +49,18 @@ namespace AndroidMonitoring.Services
         {
             bool isDeleted = _productRepository.Delete(productId) > 0;               
             return isDeleted;
+        }
+
+        public List<ProductDto> GetProducts()
+        {
+            var products =_productRepository.GetProducts()
+                .Select(productEntity => new ProductDto
+                {
+                    Id = productEntity.Id,
+                    Name = productEntity.Name,
+                    Url = productEntity.Url
+                }).ToList();
+            return products;
         }
 
         public ProductStatisticsDto GetStatistics(ProductDto product)
