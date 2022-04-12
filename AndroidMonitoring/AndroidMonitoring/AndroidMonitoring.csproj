@@ -66,14 +66,16 @@
     <Compile Include="Dto\ProductStatisticsDto.cs" />
     <Compile Include="Entities\PriceEntity.cs" />
     <Compile Include="Entities\ProductEntity.cs" />
+    <Compile Include="GraphActivity.cs" />
     <Compile Include="ListProductsAdapter.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="ProductActivity.cs" />
+    <Compile Include="Repositories\DataBaseProvider.cs" />
     <Compile Include="Repositories\PriceRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\MonitoringServices.cs" />
+    <Compile Include="Services\MonitoringService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -127,6 +129,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\list_item.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\layout_graph.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
