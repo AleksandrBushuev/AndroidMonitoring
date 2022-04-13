@@ -37,11 +37,17 @@ namespace AndroidMonitoring
             btnAddProduct.Click += (sender, evt) =>
             {
                 if (string.IsNullOrEmpty(editTextProductName.Text))
-                    return; //показать сообщение
-                   
+                {
+                    Toast.MakeText(this, "Введите название продукта", ToastLength.Short).Show();
+                    return;
+                }
+                                      
                 var urlRegex = new Regex(@"^http[s]*:\\[\w|\S|\s]+");
-                if (urlRegex.IsMatch(editTextUrl.Text))
-                    return; //показать сообщение
+                if (!urlRegex.IsMatch(editTextUrl.Text))
+                {
+                    Toast.MakeText(this, "Адрес указан не верно", ToastLength.Short).Show();
+                    return;
+                }                   
 
                 ProductEntity productEntity = new ProductEntity()
                 {

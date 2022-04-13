@@ -63,15 +63,15 @@ namespace AndroidMonitoring.Services
             return products;
         }
 
-        public ProductStatisticsDto GetStatistics(ProductDto product)
+        public ProductStatisticsDto GetStatistics(int productId)
         {
-            var productEntity = _productRepository.GetProductById(product.Id);
+            var productEntity = _productRepository.GetProductById(productId);
 
             if (productEntity == null)
-                throw new KeyNotFoundException($"Не удалось найти продукт по идентификатору {product.Id}");
+                throw new KeyNotFoundException($"Не удалось найти продукт по идентификатору {productId}");
 
             List<PriceEntity> priceEntities = _priceRepository.GetPrices()
-                .Where(price => price.ProductId == product.Id)               
+                .Where(price => price.ProductId == productId)               
                 .ToList();
 
             List<PriceDto> prices = priceEntities
