@@ -1,16 +1,11 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using AndroidMonitoring.Common;
 using AndroidMonitoring.Dto;
 using AndroidMonitoring.Entities;
 using AndroidMonitoring.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace AndroidMonitoring.Services
 {
@@ -91,7 +86,56 @@ namespace AndroidMonitoring.Services
             };
             return statistics;
         }
+        
+        public async Task<bool> UpdatePricesAsync(int productId, IProductPriceReader priceReader)
+        {
+            var productEntity = _productRepository.GetProductById(productId);
 
+            if (productEntity == null)
+                return false;
 
+            double price = await priceReader.GetPriceAsync(productEntity.Url);
+            if (price < 0)
+                return false;
+
+            var currentPriceEntity = new PriceEntity()
+            {
+                Date = DateTime.Today,
+                Price = price,
+                ProductId = productEntity.Id
+            };
+
+            PriceEntity lastPriceEntity = _priceRepository.GetPrices()
+                .Where(price => price.ProductId == productEntity.Id)
+                .OrderBy(price => price.Date)
+                .FirstOrDefault();
+
+            if(IsCanUpdatePrice(currentPriceEntity, lastPriceEntity))
+            {
+                lastPriceEntity.Price = price;
+                _priceRepository.SaveOrUpdate(lastPriceEntity);
+            }
+            else
+            {
+                _priceRepository.SaveOrUpdate(currentPriceEntity);
+            }
+                      
+            return true;
+
+        }
+
+        private bool IsCanUpdatePrice(PriceEntity currentPriceEntity, PriceEntity lastPriceEntity)
+        {
+            if (lastPriceEntity == null)
+                return false;
+
+            if (currentPriceEntity.Date != lastPriceEntity.Date)
+                return true;
+
+            if (currentPriceEntity.Price != lastPriceEntity.Price)
+                return true;
+
+            return false;
+        }
     }
 }

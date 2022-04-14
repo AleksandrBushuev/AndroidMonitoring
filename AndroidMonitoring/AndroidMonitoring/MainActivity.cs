@@ -34,7 +34,7 @@ namespace AndroidMonitoring
             var dbConnection = DataBaseProvider.GetSQLiteConnection();
             var productRepository = new ProductRepository(dbConnection);
             var priceRepository = new PriceRepository(dbConnection);
-
+                      
             _monitoringService = new MonitoringService(productRepository, priceRepository);                   
             _listView = FindViewById<ListView>(Resource.Id.list);
 

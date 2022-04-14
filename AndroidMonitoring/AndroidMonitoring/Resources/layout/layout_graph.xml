@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<TableLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:stretchColumns="1"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
-      <Microcharts.Droid.ChartView
-        android:id="@+id/chartView"
+     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+        <Button
+        android:text="Обновить"
+            android:layout_column="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonUpdate" />     
+    </TableRow>
+     <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+          <Microcharts.Droid.ChartView
+            android:id="@+id/chartView"
+            android:layout_column="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     
-</LinearLayout>
+    </TableRow>
+   
+</TableLayout >

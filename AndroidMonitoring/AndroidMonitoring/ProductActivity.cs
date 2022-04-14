@@ -1,16 +1,8 @@
 ﻿using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using AndroidMonitoring.Entities;
 using AndroidMonitoring.Repositories;
-using AndroidMonitoring.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AndroidMonitoring
@@ -42,7 +34,7 @@ namespace AndroidMonitoring
                     return;
                 }
                                       
-                var urlRegex = new Regex(@"^http[s]*:\\[\w|\S|\s]+");
+                var urlRegex = new Regex(@"^http[s]*://[\w|\S|\s]+");
                 if (!urlRegex.IsMatch(editTextUrl.Text))
                 {
                     Toast.MakeText(this, "Адрес указан не верно", ToastLength.Short).Show();

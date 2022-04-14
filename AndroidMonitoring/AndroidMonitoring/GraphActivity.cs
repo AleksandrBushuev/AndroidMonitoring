@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.OS;
 using Android.Widget;
+using AndroidMonitoring.Common;
 using AndroidMonitoring.Dto;
 using AndroidMonitoring.Repositories;
 using AndroidMonitoring.Services;
@@ -51,7 +52,18 @@ namespace AndroidMonitoring
             {
                 Toast.MakeText(this, "Отсутствуют данные для построения графика", ToastLength.Short).Show();
             }
-          
+
+            Button buttonUpdate = FindViewById<Button>(Resource.Id.buttonUpdate);
+                      
+
+            buttonUpdate.Click += async (sender, evt) =>
+            {
+                bool isUpdate = await monitoringService.UpdatePricesAsync(idProduct, new SportDepoShop());
+                if(!isUpdate)
+                    Toast.MakeText(this, "Не удалось обновить данные", ToastLength.Short).Show();
+
+            };           
+
         }
 
         private void DrawChart(List<PriceDto> prices)
